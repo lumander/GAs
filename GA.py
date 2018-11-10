@@ -1,7 +1,7 @@
 #%matplotlib inline
-import matplotlib
+#import matplotlib
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 def initPopulation( populationRange, individuals ):
     '''initializes randomly a given number of indivuduals within the interval given'''
