@@ -34,14 +34,14 @@ def reverse( string ):
         number += str( string[ len( string )- 1 - i ] )
     return int( number )
     
-def encoding( numbers ):
-    '''encodes the decimal numbers into binary strings'''
+def encoding( population ):
+    '''encodes the decimal population into binary strings'''
     
     ## TO DO
     ## USE bin FUNCTION
 
     integer_strings = []
-    for nmbr in numbers:
+    for nmbr in population:
         if nmbr == 0 or nmbr == 1:
             integer_strings.append( nmbr )
         else:
@@ -56,16 +56,16 @@ def encoding( numbers ):
                     break
             integer_strings.append( reverse ( remainders ) )
     chromosomes = len( str( max( integer_strings ) ) )
-    binary_strings = []
+    genes = []
     for string in integer_strings:
-        binary_strings.append( str( string ).zfill( chromosomes ) )
-    return binary_strings
+        genes.append( str( string ).zfill( chromosomes ) )
+    return genes
 
-def decoding( binary_strings ): # TO DO
-    '''decodes the binary strings into decimal numbers'''
+def decoding( genes ): # TO DO
+    '''decodes the binary strings into decimal population'''
     
     decimals = []
-    for string in binary_strings:
+    for string in genes:
         if string == '0' or string == '1':
             decimals.append( int( string ) )
         else:
@@ -78,9 +78,9 @@ def decoding( binary_strings ): # TO DO
 def selection( fitness_pop ):
     '''selects the indexes of the best, the second best and the worst in the entire population'''
     
-    result = {}
-    result[ 'best' ] = int( fitness_pop.argmax() )
-    result[ 'worst' ] = int( fitness_pop.argmin() )
+    selected = {}
+    selected[ 'best' ] = int( fitness_pop.argmax() )
+    selected[ 'worst' ] = int( fitness_pop.argmin() )
     second_best = 0
     maximum = fitness_pop.max()
     other_maximum = 0
@@ -93,9 +93,9 @@ def selection( fitness_pop ):
         if other_maximum == fitness_pop[i]:
             second_best = i
     
-    result[ 'second_best' ] = int( second_best )
+    selected[ 'second_best' ] = int( second_best )
 
-    return result
+    return selected
 
 def fitness( population ):
     ''''''
