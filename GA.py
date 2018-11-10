@@ -50,7 +50,7 @@ def encoding( numbers ):
             flag = True
             while( flag ):
                 remainders += str( dividendum % 2 )
-                dividendum = dividendum / 2
+                dividendum = dividendum // 2
                 if dividendum == 1:
                     remainders += str( dividendum % 2 )
                     break
@@ -144,10 +144,10 @@ while( True ):
     if len( set( population ) ) == 1:
         break
     else:
-        print "POPULATION: ", population
+        print ( "POPULATION: ", population )
         #print "FITNESS:", fitnessPop
         
-print "POPULATION: ",population
+print ( "POPULATION: ",population )
 #print "FITNESS:", fitnessPop
-print "\nGENERATION COUNT: ", generationCount
+print ( "\nGENERATION COUNT: ", generationCount )
     
