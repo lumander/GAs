@@ -3,7 +3,7 @@
 import numpy as np
 #import matplotlib.pyplot as plt
 
-def initPopulation( populationRange, individuals ):
+def init_population( population_range, individuals ):
     '''initializes randomly a given number of indivuduals within the interval given'''
     
     ##TO DO
@@ -12,13 +12,13 @@ def initPopulation( populationRange, individuals ):
     pop = []
     for i in range( individuals ):
         flag = True
-        rndm = np.random.randint( 0, populationRange )
-        while(flag):
+        rndm = np.random.randint( 0, population_range + 1 )
+        while( flag ):
             if rndm not in pop:
-                pop.append(rndm)
+                pop.append( rndm )
                 flag = False
             else:
-                rndm = np.random.randint( 0, populationRange + 1 )
+                rndm = np.random.randint( 0, population_range + 1 )
                 
     population = np.array( pop )
     return population
@@ -40,32 +40,32 @@ def encoding( numbers ):
     ## TO DO
     ## USE bin FUNCTION
 
-    integerStrings = []
+    integer_strings = []
     for nmbr in numbers:
         if nmbr == 0 or nmbr == 1:
-            integerStrings.append( nmbr )
+            integer_strings.append( nmbr )
         else:
             remainders = ""
             dividendum = nmbr
             flag = True
             while( flag ):
                 remainders += str( dividendum % 2 )
-                dividendum = dividendum // 2
+                dividendum = dividendum // 2 # diff from pyton 2.x
                 if dividendum == 1:
                     remainders += str( dividendum % 2 )
                     break
-            integerStrings.append( reverse ( remainders ) )
-    chromosomes = len( str( max( integerStrings ) ) )
-    binaryStrings = []
-    for string in integerStrings:
-        binaryStrings.append( str( string ).zfill( chromosomes ) )
-    return binaryStrings
+            integer_strings.append( reverse ( remainders ) )
+    chromosomes = len( str( max( integer_strings ) ) )
+    binary_strings = []
+    for string in integer_strings:
+        binary_strings.append( str( string ).zfill( chromosomes ) )
+    return binary_strings
 
-def decoding( binaryStrings ): # TO DO
+def decoding( binary_strings ): # TO DO
     '''decodes the binary strings into decimal numbers'''
     
     decimals = []
-    for string in binaryStrings:
+    for string in binary_strings:
         if string == '0' or string == '1':
             decimals.append( int( string ) )
         else:
@@ -75,79 +75,93 @@ def decoding( binaryStrings ): # TO DO
             decimals.append( nmbr )
     return np.array( decimals )
 
-def selection( fitnessPop ):
+def selection( fitness_pop ):
     '''selects the indexes of the best, the second best and the worst in the entire population'''
     
-    best = int( fitnessPop.argmax() )
-    worst = int( fitnessPop.argmin() )
-    secondbest = 0
-    maximum = fitnessPop.max()
-    otherMaximum = 0
-    for fit in fitnessPop:
-        if fit > otherMaximum:
+    result = {}
+    result[ 'best' ] = int( fitness_pop.argmax() )
+    result[ 'worst' ] = int( fitness_pop.argmin() )
+    second_best = 0
+    maximum = fitness_pop.max()
+    other_maximum = 0
+    for fit in fitness_pop:
+        if fit > other_maximum:
             if fit < maximum:
-                otherMaximum = fit
+                other_maximum = fit
                     
-    for i in range( len( fitnessPop ) ):
-        if otherMaximum == fitnessPop[i]:
-            secondbest = i
+    for i in range( len( fitness_pop ) ):
+        if other_maximum == fitness_pop[i]:
+            second_best = i
     
-    return np.array( [ best, int( secondbest ), worst ] )
+    result[ 'second_best' ] = int( second_best )
+
+    return result
 
 def fitness( population ):
     ''''''
     
     return np.exp( - ( population - 10 )**( 2 ) )
 
-def crossingover( best, secondbest, genes ):
+def crossing_over( best, second_best, genes ):
     '''PROVA'''
     
     chromosomes = len( genes[ 0 ] )
     split = int( np.random.randint( 0, chromosomes ) )
-    newbest = ""
-    newsecondbest = ""
+    new_best = ""
+    new_second_best = ""
     fittest = []
     for i in range( chromosomes ):
         if i < split:
-            newbest += genes[ best ][ i ] 
-            newsecondbest += genes[ secondbest ][ i ] 
+            new_best += genes[ best ][ i ] 
+            new_second_best += genes[ second_best ][ i ] 
         else:
-            newbest += genes[ secondbest ][ i ]
-            newsecondbest += genes[ best ][ i ]
-    fittest.append( newbest )
-    fittest.append( newsecondbest )
+            new_best += genes[ second_best ][ i ]
+            new_second_best += genes[ best ][ i ]
+    fittest.append( new_best )
+    fittest.append( new_second_best )
     return np.array( fittest )
 
-def changegenes( fittest, genes, worst ):
-    bestFitness = 0
+def change_genes( fittest, genes, worst ):
+    best_fitness = 0
     nmbrs = decoding( fittest )
     choose = fitness( nmbrs )
     if choose[ 0 ] > choose[ 1 ]:
-        bestFitness = fittest[ 0 ] 
+        best_fitness = fittest[ 0 ] 
     else:
-        bestFitness = fittest[ 1 ] 
+        best_fitness = fittest[ 1 ] 
    
-    genes[ worst ] = bestFitness
+    genes[ worst ] = best_fitness
     return genes
 
-population = initPopulation( 20 , 15 )
-fitnessPop = fitness( population )
-generationCount = 0
-while( True ):
-    selected = selection( fitnessPop )
-    genes = encoding( population )
-    fittest = crossingover( selected[ 0 ], selected[ 1 ], genes )
-    genes = changegenes( fittest, genes, selected[ 2 ] )
-    population = decoding( genes )
-    fitnessPop = fitness( population )
-    generationCount += 1
-    if len( set( population ) ) == 1:
-        break
-    else:
-        print ( "POPULATION: ", population )
-        #print "FITNESS:", fitnessPop
+population = init_population( 20 , 20 )
+fitness_pop = fitness( population )
+generation_count = 0
+
+def print_status( population, generation_count ):
+    print ( "POPULATION: ", population )
+    print ( "\nGENERATION COUNT: ", generation_count )
+
+try:
+    while( True ):
+        selected = selection( fitness_pop )
+        genes = encoding( population )
+        fittest = crossing_over( selected[ 'best' ], selected[ 'second_best' ], genes )
+        genes = change_genes( fittest, genes, selected[ 'worst' ] )
+        population = decoding( genes )
+        fitness_pop = fitness( population )
+        generation_count += 1
+        if len( set( population ) ) == 1:
+            print_status( population, generation_count )
+            break
+        else:
+            print ( "POPULATION: ", population )
+            if generation_count > 20:
+                if len( set( population ) ) < 3:
+                    print_status( population, generation_count )
+                    break
+
+except KeyboardInterrupt:
+    print ("\nInterrupted by user\n")
         
-print ( "POPULATION: ",population )
-#print "FITNESS:", fitnessPop
-print ( "\nGENERATION COUNT: ", generationCount )
+
     
