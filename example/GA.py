@@ -92,9 +92,10 @@ def selection( fitness_pop ):
     for i in range( len( fitness_pop ) ):
         if other_maximum == fitness_pop[i]:
             second_best = i
+        
     
     selected[ 'second_best' ] = int( second_best )
-
+    
     return selected
 
 def fitness( population ):
@@ -106,12 +107,12 @@ def crossing_over( best, second_best, genes ):
     '''PROVA'''
     
     chromosomes = len( genes[ 0 ] )
-    split = int( np.random.randint( 0, chromosomes ) )
+    split_point = int( np.random.randint( 0, chromosomes ) )
     new_best = ""
     new_second_best = ""
     fittest = []
     for i in range( chromosomes ):
-        if i < split:
+        if i < split_point:
             new_best += genes[ best ][ i ] 
             new_second_best += genes[ second_best ][ i ] 
         else:
