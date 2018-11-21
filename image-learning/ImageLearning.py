@@ -18,7 +18,7 @@ class ImageLearning(GA):
         self.alleles = 7 * self.bit
         self.generation_count = 0
         self.population=[]
-        self.image = np.asarray( Image.open('image-learning/LaNascitaDiVenere.jpg') )
+        self.image = np.asarray( Image.open('image-learning/Microsoft.jpg') )
         self.pixel_x = len( self.image[0] )
         self.pixel_y = len( self.image )
        
@@ -241,11 +241,11 @@ class ImageLearning(GA):
                 self.update_pop()         
                 self.gen_image()                      
                 self.fitness()         
-                if self.generation_count % 1000 == 0 :
+                if self.generation_count % 500 == 0 :
                     self.print_fitness()
                     self.save_image( self.population[0] )
                 self.generation_count += 1
-                if self.generation_count == 400000:
+                if self.generation_count == 100000:
                     self.save_image( self.population[0] )
                     break
                     
