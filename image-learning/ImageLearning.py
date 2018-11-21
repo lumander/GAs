@@ -27,6 +27,7 @@ class ImageLearning(GA):
         '''
         Population is encoded into a list of n Image objects
         '''
+
         random_string = np.random.randint( 0, 2, ( self.pop_size,  self.rectangles * self.alleles ), dtype='uint8' )
 
         for i in range( self.pop_size ):
@@ -185,7 +186,6 @@ class ImageLearning(GA):
         for individual in self.population:
             individual.image = self.genImage( individual.rectangles ) 
 
-
     def update_pop( self ):
 
         for individual in self.population:
@@ -214,7 +214,7 @@ class ImageLearning(GA):
         self.init_population()
         self.gen_image()
         self.fitness()       
-        
+
         try:
             while( True ):
                 

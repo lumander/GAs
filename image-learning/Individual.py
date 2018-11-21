@@ -19,8 +19,6 @@ class Rectangle():
     
 class Individual():
 
-
-
     def __init__( self, num_rectangles, binary_encoding, pixel_x, pixel_y ):
         self.num_rectangles = num_rectangles
         self.bit = 8
@@ -36,6 +34,7 @@ class Individual():
         Population is decoded from binary strings in order
         to form new Individual objects
         '''
+        
         rectangles = []
         for i in range( 0, self.num_rectangles * self.alleles, self.alleles ):
             up_left_vertex0 = self.fromGrayCode( self.binary_encoding[ i : i+8 ] )
@@ -74,7 +73,6 @@ class Individual():
         decimals.append( nmbr )
         return decimals[0]
         
-
     def update( self ):
         self.rectangles = self.decoding()
 
@@ -96,6 +94,4 @@ class Individual():
             prec = el
 
         self.binary_encoding = result
-
-
-             
+       
