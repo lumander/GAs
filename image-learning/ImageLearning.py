@@ -79,22 +79,6 @@ class ImageLearning(GA):
         
         self.population[ random_pick ].binary_encoding = "".join(temp_list)
 
-                
-
-        
-        #for individual in self.population:
-        #    random_pick = np.random.randint( 0, self.pop_size )
-        #    temp_list = list( individual.binary_encoding )
-        #    if random_pick % 2 == 0:
-        #        for i in range( random_pick, 56 ):
-        #            if temp_list[ i ] == '1':
-        #                temp_list[ i ] = '0'
-        #    else:
-        #        for i in range( 0, random_pick ):
-        #            if temp_list[ i ] == '0':
-        #                temp_list[ i ] = '1'
-        #    individual.binary_encoding = "".join( temp_list )
-
     def fitness( self ):
 
         '''
@@ -157,8 +141,6 @@ class ImageLearning(GA):
         Shows the target image
         '''
 
-        #DONE - Other system for showing an image
-        #TO DO - THE IMAGE REMAINS PENDING
         
         img = Image.fromarray( self.image )
         img.show()
@@ -230,12 +212,12 @@ class ImageLearning(GA):
         '''
 
         self.init_population()
+        self.gen_image()
+        self.fitness()       
         
         try:
             while( True ):
-                self.gen_image()
-                self.fitness()
-                #self.print_fitness()           
+                
                 self.crossing_over()
                 self.mutation()
                 self.update_pop()         
