@@ -6,6 +6,8 @@ Genetic algorithms are used to find a close-to-optimal solution among a pool of 
 
 An application in a quantum information context can be found at [nature](https://www.nature.com/articles/s41598-017-14680-7)
 
+## Description
+
 The steps involved are:
 
 + Randomly initiate a population of candidate solutions
@@ -16,12 +18,12 @@ The steps involved are:
 5. Repeat until you convergence has reached
 
 
-## Projects
+### Projects
 
-### [example](/example)
+#### [example](/example)
 
 A genetic algorithm for finding the minimum/maximum of a function
 
-### [image-learning](/image-learning)
+#### [image-learning](/image-learning)
 
 A genetic algorithm able to learn an image!
