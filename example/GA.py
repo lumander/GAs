@@ -50,7 +50,7 @@ def encoding( population ):
             flag = True
             while( flag ):
                 remainders += str( dividendum % 2 )
-                dividendum = dividendum // 2 # diff from pyton 2.x
+                dividendum = dividendum // 2 # diff from python 2.x
                 if dividendum == 1:
                     remainders += str( dividendum % 2 )
                     break
@@ -62,6 +62,7 @@ def encoding( population ):
     return genes
 
 def decoding( genes ): # TO DO
+
     '''decodes the binary strings into decimal population'''
     
     decimals = []
@@ -148,6 +149,7 @@ try:
         genes = encoding( population )
         fittest = crossing_over( selected[ 'best' ], selected[ 'second_best' ], genes )
         genes = change_genes( fittest, genes, selected[ 'worst' ] )
+        print (genes)
         population = decoding( genes )
         fitness_pop = fitness( population )
         generation_count += 1
