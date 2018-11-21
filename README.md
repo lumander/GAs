@@ -4,7 +4,7 @@ A [genetic algorithm](https://en.wikipedia.org/wiki/Genetic_algorithm) is a meta
 
 Genetic algorithms are used to find a close-to-optimal solution among a pool of candidate solutions. They are almost ubiquitous in optimization problems, with applications ranging from natural sciences to finance.
 
-An application in a quantum information context can be found at (nature)[https://www.nature.com/articles/s41598-017-14680-7] 
+An application in a quantum information context can be found at [nature](https://www.nature.com/articles/s41598-017-14680-7)
 
 The steps involved are:
 
