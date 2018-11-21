@@ -5,7 +5,7 @@ It is a metaheuristic inspired by Darwin's evolutionism.
 
 Genetic algorithm is used to find a close-to-optimal solution among a pool of candidate solutions
 
-The steps involved are::
+The steps involved are:
 
 + Randomly initiate a population of candidate solutions
 1. Perform crossing-over between candidates
