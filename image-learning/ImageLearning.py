@@ -177,7 +177,7 @@ class ImageLearning(GA):
         for rect in individual.rectangles:
            drw.rectangle( [ rect.up_left_vertex, rect.down_right_vertex ], ( rect.red, rect.green, rect.blue, 120) )
        
-        img.save( 'image-learning/generated-images/image_gencount' + str( self.generation_count ) + '.jpg' )
+        img.save( 'image-learning/generated-images/image_gencount' + str( self.generation_count ).zfill(6) + '.jpg' )
         del drw
 
     def genImage( self, individual ):

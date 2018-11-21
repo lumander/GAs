@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 class GA( metaclass = ABCMeta ):
 
-   def __init__( self, parameters ):
+    def __init__( self, parameters ):
         self.pop_size = parameters[ 'pop_size' ] 
         self.generation_count = 0
         
@@ -13,14 +13,6 @@ class GA( metaclass = ABCMeta ):
     @abstractmethod
     def sortPopulation( self ):
         pass
-
-    #@abstractmethod
-    #def encoding( self ):
-    #    pass
-
-    #@abstractmethod
-    #def decoding( self ):
-    #    pass
 
     @abstractmethod
     def crossing_over( self ):
