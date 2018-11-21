@@ -8,7 +8,7 @@ An application in a quantum information context can be found at [nature](https:/
 
 ## Description
 
-The steps involved are:
+The algorithm proceeds as follows:
 
 + Randomly initiate a population of candidate solutions
 1. Perform crossing-over between candidates
