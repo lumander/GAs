@@ -10,6 +10,37 @@ Each rectangle is defined by two opposite corners and three numbers for RGB valu
 Such an image is encoded into a single Gray-coded string.
 In such problems, Gray codes can be useful for escaping from local optima.
 
+The GeneticAlgorithm module contains the abstract class GA:
+```python
+class GA( metaclass = ABCMeta ):
+
+    def __init__( self, parameters ):
+        self.pop_size = parameters[ 'pop_size' ]
+        self.max_gen = parameters[ 'max_gen' ] 
+        self.generation_count = 0
+        self.evolution = True
+        
+    @abstractmethod
+    def init_population( self ):
+        pass
+
+    @abstractmethod
+    def sort_population( self ):
+        pass
+
+    @abstractmethod
+    def crossing_over( self ):
+        pass
+    
+    @abstractmethod
+    def mutation( self ):
+        pass
+
+    @abstractmethod
+    def fitness( self ):
+        pass
+```
+
 ### Quickstart
 
 ```python
