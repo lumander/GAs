@@ -108,9 +108,7 @@ class ImageLearning(GA):
                     tempIndividual = self.population[ j ]
                     self.population[ j ] = self.population[ i ]
                     self.population[ i ] = tempIndividual
-        
- 
-        
+                
         self.population = self.population[ 0 : self.pop_size ]
                 
     def show_image( self ):
