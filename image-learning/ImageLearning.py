@@ -25,7 +25,8 @@ class ImageLearning(GA):
     def init_population( self ):
 
         '''
-        Population is encoded into a list of n Image objects
+        Population is encoded into a list of n Individual objects
+        which represents an image of n semi-transparent rectangles
         '''
 
         random_string = np.random.randint( 0, 2, ( self.pop_size,  self.rectangles * self.alleles ), dtype = 'uint8' )
@@ -42,7 +43,7 @@ class ImageLearning(GA):
     def crossing_over( self ):
 
         '''
-        Genes of the population undergo Crossing Over
+        Genes of the population undergo crossing over
         '''
       
         for individual in range( 0 , self.pop_size - 1 , 2 ):
@@ -138,6 +139,10 @@ class ImageLearning(GA):
 
     def gen_image( self, individual ):
 
+        '''
+        Generates the image corresponding to an individual
+        '''
+
         img = Image.new( 'RGB', ( self.pixel_x, self.pixel_y ) )
         drw = ImageDraw.Draw( img, 'RGBA' )
         for rect in individual:
@@ -151,13 +156,17 @@ class ImageLearning(GA):
     def set_images( self ):
 
         '''
-        Generates an image starting from the population
+        Updates the images corresponding to the individuals
         '''
 
         for individual in self.population:
             individual.image = self.gen_image( individual.rectangles ) 
 
     def update_pop( self ):
+
+        '''
+        Updates the population coordinates
+        '''
 
         for individual in self.population:
             individual.update()
@@ -179,7 +188,8 @@ class ImageLearning(GA):
     def best ( self ):
 
         '''
-        Returns the best individual in the population
+        Returns the best individual in the population which is always
+        the 0th by construction
         '''
 
         return self.population[ 0 ]
@@ -202,8 +212,7 @@ class ImageLearning(GA):
     def evolve( self ):
 
         '''
-        Performs the entire evolution cycle of the
-        GA
+        Performs the entire evolution cycle of the GA
         '''
 
         self.show_image()
