@@ -13,7 +13,7 @@ class GA( metaclass = ABCMeta ):
         pass
 
     @abstractmethod
-    def sortPopulation( self ):
+    def sort_population( self ):
         pass
 
     @abstractmethod

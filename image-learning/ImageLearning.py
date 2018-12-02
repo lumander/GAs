@@ -91,9 +91,9 @@ class ImageLearning(GA):
             fitness = np.sum( abs( self.image - individual.image ) )
             individual.fitness = fitness
 
-        self.sortPopulation()
+        self.sort_population()
 
-    def sortPopulation( self ):
+    def sort_population( self ):
 
         '''
         Population list is ordered by individuals' fitness
@@ -101,7 +101,7 @@ class ImageLearning(GA):
         the fittest
         '''
         
-        for i in range( len(self.population) - 1):
+        for i in range( len(self.population) - 1 ):
             for j in range( i , len(self.population) ):
                 if self.population[ i ].fitness > self.population[ j ].fitness:
                     tempIndividual = self.population[ j ]

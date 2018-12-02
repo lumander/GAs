@@ -49,7 +49,7 @@ class Individual():
 
         return "".join( gray_encoding)
     
-    def fromGrayCode( self, genes ): 
+    def fromGrayCode( self, gene ): 
 
         '''
         Performs conversion from Gray Code to decimal representation
@@ -60,18 +60,17 @@ class Individual():
         ("1", "0"): "1",
         ("1", "1"): "0"}
 
-        result = temp = genes[0]
-        for el in genes[1:]:
+        binary_encoding = []
+        binary_encoding.append( gene[ 0 ] )
+        temp = gene[0]
+        for el in gene[1:]:
             temp = _xor[temp, el]
-            result += temp
+            binary_encoding.append( temp )
 
-        decimals = []
-        nmbr = 0
-                   
-        for i in range( len( result ) ):
-            nmbr += 2 ** ( len( result ) - i - 1 ) * int( result[ i ] )
-        decimals.append( nmbr )
-        return decimals[0]
+        decimal_encoding = 0
+        for i in range( len( binary_encoding ) ):
+            decimal_encoding += 2 ** ( len( binary_encoding ) - i - 1 ) * int( binary_encoding[ i ] )
+        return decimal_encoding
 
     def decoding( self ):
      
@@ -82,13 +81,13 @@ class Individual():
         
         rectangles = []
         for i in range( 0, self.num_rectangles * self.alleles, self.alleles ):
-            up_left_vertex0 = self.fromGrayCode( self.gray_encoding[ i : i+8 ] )
-            up_left_vertex1 = self.fromGrayCode( self.gray_encoding[ i+8 : i+16 ] )
-            down_right_vertex0 = self.fromGrayCode( self.gray_encoding[ i+16 : i+24 ] )
-            down_right_vertex1 = self.fromGrayCode( self.gray_encoding[ i+24 : i+32 ] )
-            red = self.fromGrayCode( self.gray_encoding[ i+32 : i+40 ] )
-            green = self.fromGrayCode( self.gray_encoding[ i+40 : i+48 ] )
-            blue = self.fromGrayCode( self.gray_encoding[ i+48 : i+56 ] )
+            up_left_vertex0 = self.fromGrayCode( self.gray_encoding[ i : i + 8 ] )
+            up_left_vertex1 = self.fromGrayCode( self.gray_encoding[ i + 8 : i + 16 ] )
+            down_right_vertex0 = self.fromGrayCode( self.gray_encoding[ i + 16 : i + 24 ] )
+            down_right_vertex1 = self.fromGrayCode( self.gray_encoding[ i + 24 : i + 32 ] )
+            red = self.fromGrayCode( self.gray_encoding[ i + 32 : i + 40 ] )
+            green = self.fromGrayCode( self.gray_encoding[ i + 40 : i + 48 ] )
+            blue = self.fromGrayCode( self.gray_encoding[ i + 48 : i + 56 ] )
             rectangle = Rectangle( up_left_vertex0, up_left_vertex1, down_right_vertex0, down_right_vertex1, red, green, blue )
             rectangles.append( rectangle )
     
