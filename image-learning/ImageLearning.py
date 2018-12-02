@@ -13,10 +13,9 @@ class ImageLearning(GA):
         '''
 
         GA.__init__( self, parameters )
-        self.rectangles = 32
+        self.rectangles = 20
         self.bit = 8
         self.alleles = 7 * self.bit
-        self.generation_count = 0
         self.population = []
         self.image = np.asarray( Image.open( parameters[ 'pathToImage' ] ) )
         self.pixel_x = len( self.image[0] )
@@ -76,7 +75,7 @@ class ImageLearning(GA):
         else:
             temp_list[ random_pick_2 ]= '0'
         
-        self.population[ random_pick ].binary_encoding = "".join(temp_list)
+        self.population[ random_pick ].binary_encoding = "".join( temp_list )
 
     def fitness( self ):
 
@@ -90,8 +89,6 @@ class ImageLearning(GA):
 
             fitness = np.sum( abs( self.image - individual.image ) )
             individual.fitness = fitness
-        
-        #self.print_fitness()
 
         self.sortPopulation()
 
@@ -114,26 +111,6 @@ class ImageLearning(GA):
         
         self.population = self.population[ 0 : self.pop_size ]
                 
-    def encoding( self ):
-
-        '''
-        Population is encoded into binary strings obtained by
-        concatenation of 8bit long substrings representing 
-        the relevant attributes of an individual  
-        '''
-        
-        for individual in self.population:
-            binary_encoding = []
-            for rect in individual.rectangles:                
-                binary_encoding.append( bin( rect.up_left_vertex[0] ).split('0b')[ 1 ].zfill( self.bit ) )
-                binary_encoding.append( bin( rect.up_left_vertex[1] ).split('0b')[ 1 ].zfill( self.bit ) )
-                binary_encoding.append( bin( rect.down_right_vertex[0] ).split('0b')[ 1 ].zfill( self.bit ) )
-                binary_encoding.append( bin( rect.down_right_vertex[1] ).split('0b')[ 1 ].zfill( self.bit ) )
-                binary_encoding.append( bin( rect.red ).split('0b')[ 1 ].zfill( self.bit ) )
-                binary_encoding.append( bin( rect.green ).split('0b')[ 1 ].zfill( self.bit ) )
-                binary_encoding.append( bin( rect.blue ).split('0b')[ 1 ].zfill( self.bit ) )
-            individual.binary_encoding =  "".join( binary_encoding ) 
-
     def show_image( self ):
 
         '''
