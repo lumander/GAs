@@ -12,6 +12,8 @@ In such problems, Gray codes can be useful for escaping from local optima.
 
 The GeneticAlgorithm module contains the abstract class GA:
 ```python
+from abc import ABCMeta, abstractmethod
+
 class GA( metaclass = ABCMeta ):
 
     def __init__( self, parameters ):
@@ -40,6 +42,8 @@ class GA( metaclass = ABCMeta ):
     def fitness( self ):
         pass
 ```
+
+The specific implementation of these methods depends on the ImageLearning class extending GA defined in the module ImageLearning
 
 ### Quickstart
 
