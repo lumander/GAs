@@ -13,7 +13,7 @@ class ImageLearning(GA):
         '''
 
         GA.__init__( self, parameters )
-        self.rectangles = 20
+        self.rectangles = 32
         self.bit = 8
         self.alleles = 7 * self.bit
         self.population = []
@@ -33,10 +33,10 @@ class ImageLearning(GA):
             binary_encoding = []
             for j in range( self.rectangles * self.alleles ):
                 binary_encoding.append( str( random_string[ i, j ] ) )
-            binary_encoding = "".join( binary_encoding )
-            ind = Individual( self.rectangles, binary_encoding, self.pixel_x, self.pixel_y )
-            ind.toGrayCode()
+            gray_encoding = Individual.toGrayCode( "".join( binary_encoding ) )
+            ind = Individual( self.rectangles, gray_encoding, self.pixel_x, self.pixel_y )
             self.population.append( ind )
+            self.set_images
 
     def crossing_over( self ):
 
@@ -49,11 +49,11 @@ class ImageLearning(GA):
             child_two = []
             split_point = np.random.randint( 0, self.rectangles * self.alleles )
             for i in range( 0, split_point ):
-                child_one.append( self.population[ individual ].binary_encoding[ i ] ) 
-                child_two.append( self.population[ individual + 1 ].binary_encoding[ i ] )
+                child_one.append( self.population[ individual ].gray_encoding[ i ] ) 
+                child_two.append( self.population[ individual + 1 ].gray_encoding[ i ] )
             for i in range( split_point, self.rectangles * self.alleles ):
-                child_one.append( self.population[ individual + 1 ].binary_encoding[ i ] )
-                child_two.append( self.population[ individual ].binary_encoding[ i ] )
+                child_one.append( self.population[ individual + 1 ].gray_encoding[ i ] )
+                child_two.append( self.population[ individual ].gray_encoding[ i ] )
             child_one = "".join( child_one )
             child_two = "".join( child_two )
             brother = Individual( self.rectangles, child_one, self.pixel_x, self.pixel_y )
@@ -68,14 +68,14 @@ class ImageLearning(GA):
         '''
 
         random_pick = np.random.randint( 0, self.pop_size )
-        temp_list = list( self.population[ random_pick ].binary_encoding )
+        temp_list = list( self.population[ random_pick ].gray_encoding )
         random_pick_2 = np.random.randint( 0, len( temp_list ) )
         if temp_list[ random_pick_2 ] == '0':
             temp_list[ random_pick_2 ]= '1'
         else:
             temp_list[ random_pick_2 ]= '0'
         
-        self.population[ random_pick ].binary_encoding = "".join( temp_list )
+        self.population[ random_pick ].gray_encoding = "".join( temp_list )
 
     def fitness( self ):
 
@@ -126,18 +126,16 @@ class ImageLearning(GA):
         Saves the image obtained from the entire
         population
         '''
-
-        #TO DO - THE IMAGE REMAINS PENDING
         
         img = Image.new('RGB', ( self.pixel_x, self.pixel_y ) )
         drw = ImageDraw.Draw(img, 'RGBA')
         for rect in individual.rectangles:
-           drw.rectangle( [ rect.up_left_vertex, rect.down_right_vertex ], ( rect.red, rect.green, rect.blue, 120) )
+           drw.rectangle( [ rect.up_left_vertex, rect.down_right_vertex ], ( rect.red, rect.green, rect.blue, 120 ) )
        
         img.save( 'image-learning/generated-images/image_gencount' + str( self.generation_count ).zfill(6) + '.jpg' )
         del drw
 
-    def genImage( self, individual ):
+    def gen_image( self, individual ):
 
         img = Image.new( 'RGB', ( self.pixel_x, self.pixel_y ) )
         drw = ImageDraw.Draw( img, 'RGBA' )
@@ -149,21 +147,20 @@ class ImageLearning(GA):
         del img, drw
         return img_as_array
 
-    def gen_image( self ):
+    def set_images( self ):
 
         '''
         Generates an image starting from the population
         '''
 
-        #IMPROVE OOP REPRESENTATION
-
         for individual in self.population:
-            individual.image = self.genImage( individual.rectangles ) 
+            individual.image = self.gen_image( individual.rectangles ) 
 
     def update_pop( self ):
 
         for individual in self.population:
             individual.update()
+        self.set_images()
 
     def print_fitness( self ):
 
@@ -177,7 +174,30 @@ class ImageLearning(GA):
            print( 'FITNESS ' + str(i), individual.fitness )
            i += 1
         print()
+    
+    def best ( self ):
 
+        '''
+        Returns the best individual in the population
+        '''
+
+        return self.population[ 0 ]
+
+    def check( self ):
+
+        '''
+        Increments the generation count, prints the status of the iterations,
+        blocks the evolution after a fixed number of iterations
+        '''
+
+        if self.generation_count % 500 == 0 and self.generation_count != self.max_gen:
+            self.print_fitness()
+            self.save_image( self.best() )
+        self.generation_count += 1
+        if self.generation_count == self.max_gen:
+            self.save_image( self.best() )
+            self.evolution = False
+        
     def evolve( self ):
 
         '''
@@ -187,32 +207,21 @@ class ImageLearning(GA):
 
         self.show_image()
         self.init_population()
-        self.gen_image()
         self.fitness()       
 
         try:
-            while( True ):
+            while( self.evolution  ):
                 
                 self.crossing_over()
                 self.mutation()
-                self.update_pop()         
-                self.gen_image()                      
+                self.update_pop()                               
                 self.fitness()         
-                if self.generation_count % 500 == 0 :
-                    self.print_fitness()
-                    self.save_image( self.population[0] )
-                self.generation_count += 1
-                if self.generation_count == 100000:
-                    self.save_image( self.population[0] )
-                    break
+                self.check()
                     
         except KeyboardInterrupt:
             print ("\nInterrupted by user\n")
-            self.print_fitness()
-            self.save_image( self.population[0] )
-            
-
+                    
 if __name__ == '__main__':
 
-    im = ImageLearning( {'pop_size':10, 'pathToImage':'image-learning/Microsoft.jpg'} )
+    im = ImageLearning( {'pop_size':10, 'pathToImage':'image-learning/Microsoft.jpg', 'max_gen':100000} )
     im.evolve()

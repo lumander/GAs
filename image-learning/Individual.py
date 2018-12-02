@@ -19,36 +19,36 @@ class Rectangle():
     
 class Individual():
 
-    def __init__( self, num_rectangles, binary_encoding, pixel_x, pixel_y ):
+    def __init__( self, num_rectangles, gray_encoding, pixel_x, pixel_y ):
         self.num_rectangles = num_rectangles
         self.bit = 8
         self.alleles = 7 * self.bit
-        self.binary_encoding = binary_encoding
+        self.gray_encoding = gray_encoding 
         self.rectangles = self.decoding()
         self.fitness = 0
-        self.image = np.zeros( ( pixel_x, pixel_y, 3 ) , dtype='int16' )
+        self.image = np.zeros( ( pixel_x, pixel_y, 3 ) , dtype = 'int16' )
 
-    def decoding( self ):
-     
+    @staticmethod
+    def toGrayCode( binary_encoding ):
+
         '''
-        Population is decoded from binary strings in order
-        to form new Individual objects
+        Performs conversion from decimal representation to Gray Code 
         '''
-        
-        rectangles = []
-        for i in range( 0, self.num_rectangles * self.alleles, self.alleles ):
-            up_left_vertex0 = self.fromGrayCode( self.binary_encoding[ i : i+8 ] )
-            up_left_vertex1 = self.fromGrayCode( self.binary_encoding[ i+8 : i+16 ] )
-            down_right_vertex0 = self.fromGrayCode( self.binary_encoding[ i+16 : i+24 ] )
-            down_right_vertex1 = self.fromGrayCode( self.binary_encoding[ i+24 : i+32 ] )
-            red = self.fromGrayCode( self.binary_encoding[ i+32 : i+40 ] )
-            green = self.fromGrayCode( self.binary_encoding[ i+40 : i+48 ] )
-            blue = self.fromGrayCode( self.binary_encoding[ i+48 : i+56 ] )
-            rectangle = Rectangle( up_left_vertex0, up_left_vertex1, down_right_vertex0, down_right_vertex1, red, green, blue )
-            rectangles.append( rectangle )
+
+        _xor = {("0", "0"): "0",
+        ("0", "1"): "1",
+        ("1", "0"): "1",
+        ("1", "1"): "0"}
+
+        gray_encoding = []
+        gray_encoding.append( binary_encoding[ 0 ] )
+        temp = binary_encoding[ 0 ]
+        for el in binary_encoding[ 1: ]:
+            gray_encoding.append( _xor[ el, temp ] )
+            temp = el
+
+        return "".join( gray_encoding)
     
-        return rectangles
-
     def fromGrayCode( self, genes ): 
 
         '''
@@ -60,10 +60,10 @@ class Individual():
         ("1", "0"): "1",
         ("1", "1"): "0"}
 
-        result = prec = genes[0]
+        result = temp = genes[0]
         for el in genes[1:]:
-            prec = _xor[prec, el]
-            result += prec
+            temp = _xor[temp, el]
+            result += temp
 
         decimals = []
         nmbr = 0
@@ -72,26 +72,27 @@ class Individual():
             nmbr += 2 ** ( len( result ) - i - 1 ) * int( result[ i ] )
         decimals.append( nmbr )
         return decimals[0]
+
+    def decoding( self ):
+     
+        '''
+        Population is decoded from binary strings in order
+        to form new Individual objects
+        '''
+        
+        rectangles = []
+        for i in range( 0, self.num_rectangles * self.alleles, self.alleles ):
+            up_left_vertex0 = self.fromGrayCode( self.gray_encoding[ i : i+8 ] )
+            up_left_vertex1 = self.fromGrayCode( self.gray_encoding[ i+8 : i+16 ] )
+            down_right_vertex0 = self.fromGrayCode( self.gray_encoding[ i+16 : i+24 ] )
+            down_right_vertex1 = self.fromGrayCode( self.gray_encoding[ i+24 : i+32 ] )
+            red = self.fromGrayCode( self.gray_encoding[ i+32 : i+40 ] )
+            green = self.fromGrayCode( self.gray_encoding[ i+40 : i+48 ] )
+            blue = self.fromGrayCode( self.gray_encoding[ i+48 : i+56 ] )
+            rectangle = Rectangle( up_left_vertex0, up_left_vertex1, down_right_vertex0, down_right_vertex1, red, green, blue )
+            rectangles.append( rectangle )
+    
+        return rectangles
         
     def update( self ):
         self.rectangles = self.decoding()
-
-    def toGrayCode( self ):
-
-        '''
-        Performs conversion decimal representation to Gray Code 
-        '''
-
-        _xor = {("0", "0"): "0",
-        ("0", "1"): "1",
-        ("1", "0"): "1",
-        ("1", "1"): "0"}
-
-
-        result = prec = self.binary_encoding[0]
-        for el in self.binary_encoding[1:]:
-            result += _xor[el, prec]
-            prec = el
-
-        self.binary_encoding = result
-       
