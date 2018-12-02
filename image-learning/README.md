@@ -43,12 +43,15 @@ class GA( metaclass = ABCMeta ):
         pass
 ```
 
-The specific implementation of these methods depends on the ImageLearning class extending GA defined in the module ImageLearning
+The ImageLearning class extending GA defines the specific implementation of these methods.
+In this version of the GA, all the individuals mate and their children are added to the population.
+Then, they are ordered according to their fitness and in perfect Darwinian spirit, only the strongest survive.
+
 
 ### Quickstart
 
 ```python
 pip3 install -r requirements.txt
-python3 ImageLearning.py '{"pop_size":10, "pathToImage":"image-learning/Microsoft.jpg", "max_gen":100000}'
+python3 ImageLearning.py '{"pop_size":10, "path_to_image":"image-learning/Microsoft.jpg", "max_gen":100000}'
 ```
 It is compatible with python 2.7 hence you can easily run it with pip and python
