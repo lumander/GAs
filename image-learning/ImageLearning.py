@@ -17,8 +17,8 @@ class ImageLearning(GA):
         self.bit = 8
         self.alleles = 7 * self.bit
         self.generation_count = 0
-        self.population=[]
-        self.image = np.asarray( Image.open('image-learning/Microsoft.jpg') )
+        self.population = []
+        self.image = np.asarray( Image.open( parameters[ 'pathToImage' ] ) )
         self.pixel_x = len( self.image[0] )
         self.pixel_y = len( self.image )
        
@@ -28,12 +28,13 @@ class ImageLearning(GA):
         Population is encoded into a list of n Image objects
         '''
 
-        random_string = np.random.randint( 0, 2, ( self.pop_size,  self.rectangles * self.alleles ), dtype='uint8' )
+        random_string = np.random.randint( 0, 2, ( self.pop_size,  self.rectangles * self.alleles ), dtype = 'uint8' )
 
         for i in range( self.pop_size ):
-            binary_encoding = ""
+            binary_encoding = []
             for j in range( self.rectangles * self.alleles ):
-                binary_encoding += str( random_string[ i, j ] )
+                binary_encoding.append( str( random_string[ i, j ] ) )
+            binary_encoding = "".join( binary_encoding )
             ind = Individual( self.rectangles, binary_encoding, self.pixel_x, self.pixel_y )
             ind.toGrayCode()
             self.population.append( ind )
@@ -43,22 +44,19 @@ class ImageLearning(GA):
         '''
         Genes of the population undergo Crossing Over
         '''
-
-        child_one = ""
-        child_two = ""
-        #random_pick = np.random.randint( 1, self.pop_size )       
+      
         for individual in range( 0 , self.pop_size - 1 , 2 ):
-            child_one=""
-            child_two=""
+            child_one = []
+            child_two = []
             split_point = np.random.randint( 0, self.rectangles * self.alleles )
             for i in range( 0, split_point ):
-                child_one += self.population[ individual ].binary_encoding[ i ] 
-                child_two += self.population[ individual + 1 ].binary_encoding[ i ]
+                child_one.append( self.population[ individual ].binary_encoding[ i ] ) 
+                child_two.append( self.population[ individual + 1 ].binary_encoding[ i ] )
             for i in range( split_point, self.rectangles * self.alleles ):
-                child_one += self.population[ individual + 1 ].binary_encoding[ i ] 
-                child_two += self.population[ individual ].binary_encoding[ i ]
-            #self.population[individual].binary_encoding = child_one
-            #self.population[individual + 1].binary_encoding = child_two
+                child_one.append( self.population[ individual + 1 ].binary_encoding[ i ] )
+                child_two.append( self.population[ individual ].binary_encoding[ i ] )
+            child_one = "".join( child_one )
+            child_two = "".join( child_two )
             brother = Individual( self.rectangles, child_one, self.pixel_x, self.pixel_y )
             sister = Individual( self.rectangles, child_two, self.pixel_x, self.pixel_y )
             self.population.append( brother )
@@ -125,16 +123,16 @@ class ImageLearning(GA):
         '''
         
         for individual in self.population:
-            binary_encoding = ""
+            binary_encoding = []
             for rect in individual.rectangles:                
-                binary_encoding += bin( rect.up_left_vertex[0] ).split('0b')[ 1 ].zfill( self.bit )
-                binary_encoding += bin( rect.up_left_vertex[1] ).split('0b')[ 1 ].zfill( self.bit )
-                binary_encoding += bin( rect.down_right_vertex[0] ).split('0b')[ 1 ].zfill( self.bit )
-                binary_encoding += bin( rect.down_right_vertex[1] ).split('0b')[ 1 ].zfill( self.bit )
-                binary_encoding += bin( rect.red ).split('0b')[ 1 ].zfill( self.bit )
-                binary_encoding += bin( rect.green ).split('0b')[ 1 ].zfill( self.bit )
-                binary_encoding += bin( rect.blue ).split('0b')[ 1 ].zfill( self.bit )
-            individual.binary_encoding =  binary_encoding 
+                binary_encoding.append( bin( rect.up_left_vertex[0] ).split('0b')[ 1 ].zfill( self.bit ) )
+                binary_encoding.append( bin( rect.up_left_vertex[1] ).split('0b')[ 1 ].zfill( self.bit ) )
+                binary_encoding.append( bin( rect.down_right_vertex[0] ).split('0b')[ 1 ].zfill( self.bit ) )
+                binary_encoding.append( bin( rect.down_right_vertex[1] ).split('0b')[ 1 ].zfill( self.bit ) )
+                binary_encoding.append( bin( rect.red ).split('0b')[ 1 ].zfill( self.bit ) )
+                binary_encoding.append( bin( rect.green ).split('0b')[ 1 ].zfill( self.bit ) )
+                binary_encoding.append( bin( rect.blue ).split('0b')[ 1 ].zfill( self.bit ) )
+            individual.binary_encoding =  "".join( binary_encoding ) 
 
     def show_image( self ):
 
@@ -142,7 +140,6 @@ class ImageLearning(GA):
         Shows the target image
         '''
 
-        
         img = Image.fromarray( self.image )
         img.show()
 
@@ -168,9 +165,9 @@ class ImageLearning(GA):
         img = Image.new( 'RGB', ( self.pixel_x, self.pixel_y ) )
         drw = ImageDraw.Draw( img, 'RGBA' )
         for rect in individual:
-            drw.rectangle( [rect.up_left_vertex,rect.down_right_vertex], ( rect.red, rect.green, rect.blue, 120 ) )
+            drw.rectangle( [ rect.up_left_vertex,rect.down_right_vertex ], ( rect.red, rect.green, rect.blue, 120 ) )
         
-        img_as_array = np.asarray( img , dtype='int16')
+        img_as_array = np.asarray( img , dtype = 'int16' )
                 
         del img, drw
         return img_as_array
@@ -211,6 +208,7 @@ class ImageLearning(GA):
         GA
         '''
 
+        self.show_image()
         self.init_population()
         self.gen_image()
         self.fitness()       
@@ -239,6 +237,5 @@ class ImageLearning(GA):
 
 if __name__ == '__main__':
 
-    im = ImageLearning( {'pop_size':10} )
-    im.show_image()
+    im = ImageLearning( {'pop_size':10, 'pathToImage':'image-learning/Microsoft.jpg'} )
     im.evolve()
