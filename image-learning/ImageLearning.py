@@ -2,6 +2,7 @@ from GeneticAlgorithm import GA
 from Individual import Rectangle, Individual
 from PIL import Image, ImageDraw
 import numpy as np
+import json, sys
              
 
 class ImageLearning(GA):
@@ -223,5 +224,6 @@ class ImageLearning(GA):
                     
 if __name__ == '__main__':
 
-    im = ImageLearning( {'pop_size':10, 'pathToImage':'image-learning/Microsoft.jpg', 'max_gen':100000} )
+    parameters = json.loads( sys.argv[1] )
+    im = ImageLearning( parameters )
     im.evolve()
