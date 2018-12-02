@@ -15,7 +15,7 @@ The algorithm proceeds as follows:
 2. Perform mutations
 3. Evaluating the fitness of the candidates
 4. Select the best individuals
-5. Repeat until you convergence has reached
+5. Repeat until convergence has reached
 
 
 ### Projects
