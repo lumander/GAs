@@ -105,9 +105,9 @@ class ImageLearning(GA):
         for i in range( len( self.population ) - 1 ):
             for j in range( i , len( self.population ) ):
                 if self.population[ i ].fitness > self.population[ j ].fitness:
-                    tempIndividual = self.population[ j ]
+                    temp_individual = self.population[ j ]
                     self.population[ j ] = self.population[ i ]
-                    self.population[ i ] = tempIndividual
+                    self.population[ i ] = temp_individual
                 
         self.population = self.population[ 0 : self.pop_size ]
                 
