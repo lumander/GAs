@@ -5,6 +5,11 @@ In this particular case, I have chosen an image representing Microsoft's logo.
 
 ### Implementation 
 
+Each individual of the population is represented by an image made up of a fixed number of semi-transparent rectangles.
+Each rectangle is defined by two opposite corners and three numbers for RGB values.
+Such an image is encoded into a single Gray-coded string.
+In such problems, Gray codes can be useful for escaping from local optima.
+
 ### Quickstart
 
 ```python
