@@ -20,7 +20,7 @@ The algorithm proceeds as follows:
 
 ### Projects
 
-#### [example](/example)
+#### [example - test version ](/example)
 
 A genetic algorithm for finding the minimum/maximum of a function
 
