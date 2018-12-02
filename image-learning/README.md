@@ -43,10 +43,28 @@ class GA( metaclass = ABCMeta ):
         pass
 ```
 
-The ImageLearning class extending GA defines the specific implementation of these methods.
+The ImageLearning class defines the specific implementation of these methods.
 In this version of the GA, all the individuals mate and their children are added to the population.
-Then, they are ordered according to their fitness and in perfect Darwinian spirit, only the strongest survive.
 
+Then, they are ordered according to their fitness and in perfect Darwinian spirit, only the strongest survive.
+```
+    def sort_population( self ):
+
+        '''
+        Population list is ordered by individuals' fitness
+        in ascending order so that the 0th element is always
+        the fittest
+        '''
+        
+        for i in range( len( self.population ) - 1 ):
+            for j in range( i , len( self.population ) ):
+                if self.population[ i ].fitness > self.population[ j ].fitness:
+                    tempIndividual = self.population[ j ]
+                    self.population[ j ] = self.population[ i ]
+                    self.population[ i ] = tempIndividual
+                
+        self.population = self.population[ 0 : self.pop_size ]
+ ```
 
 ### Quickstart
 
