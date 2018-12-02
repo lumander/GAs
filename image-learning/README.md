@@ -76,8 +76,10 @@ python3 ImageLearning.py '{"pop_size":10, "path_to_image":"image-learning/Micros
 ```
 It is compatible with python 2.7 hence you can easily run it with pip and python
 
+---
+
 ### ToDo
 
-Trying different ways of mutation and crossing over
-Plotting the evolution of the fitness through the entire cycle
-Improve efficiency
+* Trying different ways of mutation and crossing over
+* Plotting the evolution of the fitness through the entire cycle
+* Improve efficiency
