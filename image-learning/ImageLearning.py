@@ -18,7 +18,7 @@ class ImageLearning(GA):
         self.bit = 8
         self.alleles = 7 * self.bit
         self.population = []
-        self.image = np.asarray( Image.open( parameters[ 'pathToImage' ] ) )
+        self.image = np.asarray( Image.open( parameters[ 'path_to_image' ] ) )
         self.pixel_x = len( self.image[0] )
         self.pixel_y = len( self.image )
        
@@ -69,15 +69,15 @@ class ImageLearning(GA):
         Genes undergo random mutations
         '''
 
-        random_pick = np.random.randint( 0, self.pop_size )
-        temp_list = list( self.population[ random_pick ].gray_encoding )
-        random_pick_2 = np.random.randint( 0, len( temp_list ) )
-        if temp_list[ random_pick_2 ] == '0':
-            temp_list[ random_pick_2 ]= '1'
+        random_individual = np.random.randint( 0, self.pop_size )
+        temp_list = list( self.population[ random_individual ].gray_encoding )
+        random_pick = np.random.randint( 0, len( temp_list ) )
+        if temp_list[ random_pick ] == '0':
+            temp_list[ random_pick ]= '1'
         else:
-            temp_list[ random_pick_2 ]= '0'
+            temp_list[ random_pick ]= '0'
         
-        self.population[ random_pick ].gray_encoding = "".join( temp_list )
+        self.population[ random_individual ].gray_encoding = "".join( temp_list )
 
     def fitness( self ):
 
