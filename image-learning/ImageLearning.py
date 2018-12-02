@@ -102,8 +102,8 @@ class ImageLearning(GA):
         the fittest
         '''
         
-        for i in range( len(self.population) - 1 ):
-            for j in range( i , len(self.population) ):
+        for i in range( len( self.population ) - 1 ):
+            for j in range( i , len( self.population ) ):
                 if self.population[ i ].fitness > self.population[ j ].fitness:
                     tempIndividual = self.population[ j ]
                     self.population[ j ] = self.population[ i ]
@@ -129,8 +129,8 @@ class ImageLearning(GA):
         population
         '''
         
-        img = Image.new('RGB', ( self.pixel_x, self.pixel_y ) )
-        drw = ImageDraw.Draw(img, 'RGBA')
+        img = Image.new( 'RGB', ( self.pixel_x, self.pixel_y ) )
+        drw = ImageDraw.Draw( img, 'RGBA')
         for rect in individual.rectangles:
            drw.rectangle( [ rect.up_left_vertex, rect.down_right_vertex ], ( rect.red, rect.green, rect.blue, 120 ) )
        
