@@ -11,6 +11,7 @@ Such an image is encoded into a single Gray-coded string.
 In such problems, Gray codes can be useful for escaping from local optima.
 
 The GeneticAlgorithm module contains the abstract class GA:
+
 ```python
 from abc import ABCMeta, abstractmethod
 
@@ -47,7 +48,8 @@ The ImageLearning class defines the specific implementation of these methods.
 In this version of the GA, all the individuals mate and their children are added to the population.
 
 Then, they are ordered according to their fitness and in perfect Darwinian spirit, only the strongest survive.
-```
+
+```python
     def sort_population( self ):
 
         '''
