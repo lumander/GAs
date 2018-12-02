@@ -75,3 +75,9 @@ pip3 install -r requirements.txt
 python3 ImageLearning.py '{"pop_size":10, "path_to_image":"image-learning/Microsoft.jpg", "max_gen":100000}'
 ```
 It is compatible with python 2.7 hence you can easily run it with pip and python
+
+### ToDo
+
+Trying different ways of mutation and crossing over
+Plotting the evolution of the fitness through the entire cycle
+Improve efficiency
